@@ -4,25 +4,26 @@ var express = require('express'),
     app     = express(),
     eps     = require('ejs'),
     morgan  = require('morgan');
-
 var Stopwatch = require('timer-stopwatch');
 var dataRate = 100; //milliseconds
 var switchDataRate = 100; //milliseconds
 var telemetryData, switchData;
 var stopwatch = new Stopwatch(); // A new count up stopwatch. Starts at 0. 
 var timer = new Stopwatch(36000000); // A new countdown timer with 60 seconds 
-
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var ip = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
     
 Object.assign=require('object-assign')
 
 app.use(morgan('combined'))
-
-
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var ip = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
  
-app.get('/', (req, res) => res.json({ message: 'telemetry data stream demo' }) );
+initData();
+runDataStream();
+runSwitchStream();
 
+app.get('/', (req, res) => res.json({ message: 'telemetry data stream demo' }) );
+app.get('/api/telemetry/recent', (req, res) => res.json(telemetryData)); //numerical data from spacesuit sensors
+app.get('/api/switch/recent', (req, res) => res.json(switchData)); //telemetry switches driven by numerical data points or other triggers
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
@@ -46,7 +47,6 @@ app.use(function(err, req, res, next){
 
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
-
 
 function initData(){
     //console.log("initData");
