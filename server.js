@@ -15,13 +15,17 @@ var timer = new Stopwatch(36000000); // A new countdown timer with 60 seconds
     
 Object.assign=require('object-assign')
 
-app.engine('html', require('ejs').renderFile);
+//app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
+// var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+//     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
+//     mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+//     mongoURLLabel = "";
+
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var ip = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
+ 
 
 // if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 //   var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
@@ -86,20 +90,20 @@ app.get('/', (req, res) => res.json({ message: 'telemetry data stream demo' }) )
 //   //}
 // });
 
-app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  // if (!db) {
-  //   initDb(function(err){});
-  // }
-  // if (db) {
-  //   db.collection('counts').count(function(err, count ){
-  //     res.send('{ pageCount: ' + count + '}');
-  //   });
-  // } else {
-    res.send('{ pageCount: -1 }');
-  //}
-});
+// app.get('/pagecount', function (req, res) {
+//   // try to initialize the db on every request if it's not already
+//   // initialized.
+//   // if (!db) {
+//   //   initDb(function(err){});
+//   // }
+//   // if (db) {
+//   //   db.collection('counts').count(function(err, count ){
+//   //     res.send('{ pageCount: ' + count + '}');
+//   //   });
+//   // } else {
+//     res.send('{ pageCount: -1 }');
+//   //}
+// });
 
 // error handling
 app.use(function(err, req, res, next){
