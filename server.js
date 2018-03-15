@@ -1,9 +1,5 @@
-//  OpenShift sample Node application
-var express = require('express'),
-    fs      = require('fs'),
-    app     = express(),
-    eps     = require('ejs'),
-    morgan  = require('morgan');
+var express = require('express');
+var app     = express();
 var Stopwatch = require('timer-stopwatch');
 var dataRate = 100; //milliseconds
 var switchDataRate = 100; //milliseconds
@@ -12,10 +8,6 @@ var stopwatch = new Stopwatch(); // A new count up stopwatch. Starts at 0.
 var timer = new Stopwatch(36000000); // A new countdown timer with 60 seconds 
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080
 var ip = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
-    
-Object.assign=require('object-assign')
-
-app.use(morgan('combined'))
  
 initData();
 runDataStream();
@@ -24,20 +16,6 @@ runSwitchStream();
 app.get('/', (req, res) => res.json({ message: 'telemetry data stream demo' }) );
 app.get('/api/telemetry/recent', (req, res) => res.json(telemetryData)); //numerical data from spacesuit sensors
 app.get('/api/switch/recent', (req, res) => res.json(switchData)); //telemetry switches driven by numerical data points or other triggers
-app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  // if (!db) {
-  //   initDb(function(err){});
-  // }
-  // if (db) {
-  //   db.collection('counts').count(function(err, count ){
-  //     res.send('{ pageCount: ' + count + '}');
-  //   });
-  // } else {
-    res.send('{ pageCount: -1 }');
-  //}
-});
 
 // error handling
 app.use(function(err, req, res, next){
