@@ -4,6 +4,14 @@ var express = require('express'),
     app     = express(),
     eps     = require('ejs'),
     morgan  = require('morgan');
+
+var Stopwatch = require('timer-stopwatch');
+var dataRate = 100; //milliseconds
+var switchDataRate = 100; //milliseconds
+var telemetryData, switchData;
+var stopwatch = new Stopwatch(); // A new count up stopwatch. Starts at 0. 
+var timer = new Stopwatch(36000000); // A new countdown timer with 60 seconds 
+
     
 Object.assign=require('object-assign')
 
